@@ -1,0 +1,187 @@
+<div class="flex flex-col items-center justify-center mt-5" *ngIf="finisheds">
+  <h1 class="text-center text-4xl text-[#FFFFFF] mt-5 font-bold">
+    LISTADO INCIDENCIAS TERMINADAS
+  </h1>
+  <div class="relative inline-block" *ngIf="finisheds.data.length > 0">
+    <h2 class="text-center text-2xl text-[#FFFFFF] mt-5 font-bold mb-2">
+      Selecciona el cliente:
+    </h2>
+    <input
+      list="clients"
+      [(ngModel)]="name"
+      class="rounded-lg py-2 px-4 w-72 text-black"
+      placeholder="Buscar cliente"
+    />
+    <datalist id="clients" class="mt-5 px-5">
+      <option *ngFor="let client of clients.data" [value]="client.name">
+        Cliente 0{{ client.id }} - {{ client.name }}
+      </option>
+    </datalist>
+  </div>
+</div>
+
+<div *ngIf="!finisheds.data.length">
+  <h2 class="text-red-500 text-2xl text-center mt-16">
+    No hay ninguna incidencia terminada
+  </h2>
+</div>
+
+<div
+  *ngIf="finisheds.data.length > 0"
+  class="overflow-hidden rounded-lg border border-gray-200 shadow-md m-5"
+>
+  <div class="overflow-x-auto">
+    <table class="w-full border-collapse text-left text-sm text-gray-500">
+      <thead class="bg-gray-50">
+        <tr>
+          <th
+            scope="col"
+            class="px-6 py-4 font-medium text-gray-900 text-sm md:text-base lg:text-lg xl:text-xl"
+          >
+            Nº Documento
+          </th>
+          <th
+            scope="col"
+            class="px-6 py-4 font-medium text-gray-900 text-sm md:text-base lg:text-lg xl:text-xl"
+          >
+            Datos cliente
+          </th>
+          <th
+            scope="col"
+            class="px-6 py-4 font-medium text-gray-900 text-sm md:text-base lg:text-lg xl:text-xl"
+          >
+            Fecha
+          </th>
+          <th
+            scope="col"
+            class="px-6 py-4 font-medium text-gray-900 text-sm md:text-base lg:text-lg xl:text-xl"
+          >
+            Datos dispositivo
+          </th>
+          <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100 border-t border-gray-100">
+        <tr
+          *ngFor="let document of finisheds.data | filterTerminado : name"
+          class="hover:bg-green-800"
+        >
+          <td
+            class="px-6 py-4 text-gray-400 text-sm md:text-base lg:text-lg xl:text-xl"
+          >
+            {{ document.id }}
+          </td>
+          <td class="px-6 py-4">
+            <div class="text-sm md:text-base lg:text-lg xl:text-xl">
+              <div class="text-gray-200">
+                Nombre: {{ document.client.name }}
+              </div>
+              <hr class="mt-2 opacity-10" />
+              <div class="mt-2 text-gray-200">
+                Nº Cliente: 0{{ document.client.id }}
+              </div>
+              <hr class="mt-2 opacity-10" />
+              <div class="mt-2 text-gray-200">
+                Dirección: {{ document.client.address }}
+              </div>
+              <hr class="mt-2 opacity-10" />
+              <div class="mt-2 text-gray-200">
+                Ciudad: {{ document.client.town }}
+              </div>
+              <hr class="mt-2 opacity-10" />
+              <div class="mt-2 text-gray-200">
+                Teléfono: {{ document.client.telephone }}
+              </div>
+              <hr class="mt-2 opacity-10" />
+              <div class="mt-2 text-gray-200">
+                DNI: {{ document.client.dni }}
+              </div>
+            </div>
+          </td>
+          <td
+            class="px-6 py-4 text-gray-400 text-sm md:text-base lg:text-lg xl:text-xl"
+          >
+            <span
+              class="inline-flex items-center rounded-full text-xs text-gray-400 md:text-base lg:text-lg xl:text-xl"
+            >
+              {{ document.created_at | date : "dd/MM/yyyy" }}
+            </span>
+          </td>
+          <td
+            class="px-6 py-4 text-gray-400 text-sm md:text-base lg:text-lg xl:text-xl"
+          >
+            <div class="text-gray-200">Tipo: {{ document.type }}</div>
+            <hr class="mt-2 opacity-10" />
+            <div class="mt-2 text-gray-200">Modelo: {{ document.model }}</div>
+            <hr class="mt-2 opacity-10" />
+            <div class="mt-2 text-gray-200">
+              Nº Serie: {{ document.serial }}
+            </div>
+            <hr class="mt-2 opacity-10" *ngIf="document.password" />
+            <div class="mt-2 text-gray-200" *ngIf="document.password">
+              Contraseña: {{ document.password }}
+            </div>
+            <hr class="mt-2 opacity-10" *ngIf="document.password" />
+            <div class="mt-2 text-gray-200" *ngIf="document.charger">
+              Cargador: {{ document.charger }}
+            </div>
+          </td>
+
+          <td class="px-6 py-4">
+            <div class="flex justify-end gap-4">
+              <a
+                x-data="{ tooltip: 'Edite' }"
+                class="cursor-pointer"
+                (click)="finaliza(document.id)"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 512 512"
+                  id="IconChangeColor"
+                >
+                  <title>ionicons-v5-b</title>
+                  <path
+                    d="M400,148l-21.12-24.57A191.43,191.43,0,0,0,240,64C134,64,48,150,48,256s86,192,192,192A192.09,192.09,0,0,0,421.07,320"
+                    style="
+                      fill: none;
+                      stroke: #000;
+                      stroke-linecap: square;
+                      stroke-miterlimit: 10;
+                      stroke-width: 32px;
+                    "
+                    id="mainIconPathAttribute"
+                    filter="url(#shadow)"
+                  ></path>
+                  <path
+                    d="M464,68.45V220a4,4,0,0,1-4,4H308.45a4,4,0,0,1-2.83-6.83L457.17,65.62A4,4,0,0,1,464,68.45Z"
+                    id="mainIconPathAttribute"
+                  ></path>
+                  <filter id="shadow">
+                    <feDropShadow
+                      id="shadowValue"
+                      stdDeviation=".5"
+                      dx="0"
+                      dy="0"
+                      flood-color="black"
+                    ></feDropShadow>
+                  </filter>
+                  <filter id="shadow">
+                    <feDropShadow
+                      id="shadowValue"
+                      stdDeviation=".5"
+                      dx="0"
+                      dy="0"
+                      flood-color="black"
+                    ></feDropShadow>
+                  </filter>
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

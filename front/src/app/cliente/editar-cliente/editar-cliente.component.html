@@ -1,0 +1,146 @@
+<div class="p-5 text-center" *ngIf="client">
+  <h1 class="text-center text-4xl text-[#FFFFFF] mt-5 font-bold">
+    EDITAR CLIENTE Nº0{{ client.data.id }}
+  </h1>
+  <form [formGroup]="clienteForm" class="mt-8" autocomplete="off">
+    <div class="mb-4">
+      <label for="name" class="inline-block font-medium text-gray-700 mb-1"
+        >Nombre del cliente</label
+      >
+      <input
+        type="text"
+        formControlName="name"
+        name="name"
+        id="name"
+        placeholder="Nombre del cliente"
+        ngModel="{{ client.data.name }}"
+        class="bg-gray-100 text-gray-800 block w-2/4 m-auto rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+      />
+      <div
+        *ngIf="
+          clienteForm.get('name').invalid && clienteForm.get('name').touched
+        "
+        class="text-white mt-2 bg-red-800 w-1/2 m-auto rounded-lg p-1"
+      >
+        Nombre del cliente obligatorio
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <label for="dni" class="inline-block font-medium text-gray-700 mb-1"
+        >DNI del cliente</label
+      >
+      <input
+        type="name"
+        formControlName="dni"
+        name="dni"
+        id="dni"
+        placeholder="DNI del cliente (ej: 21524513A)"
+        ngModel="{{ client.data.dni }}"
+        class="bg-gray-100 text-gray-800 block w-2/4 m-auto rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+      />
+      <div
+        *ngIf="clienteForm.get('dni').invalid && clienteForm.get('dni').touched"
+        class="text-white mt-2 bg-red-800 w-1/2 m-auto rounded-lg p-1"
+      >
+        DNI del cliente obligatorio
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <label for="address" class="inline-block font-medium text-gray-700 mb-1"
+        >Dirección del cliente</label
+      >
+      <input
+        type="text"
+        formControlName="address"
+        name="address"
+        id="address"
+        placeholder="Dirección del cliente (ej: C/ Comunidad Valenciana 27)"
+        ngModel="{{ client.data.address }}"
+        class="bg-gray-100 text-gray-800 block w-2/4 m-auto rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+      />
+      <div
+        *ngIf="
+          clienteForm.get('address').invalid &&
+          clienteForm.get('address').touched
+        "
+        class="text-white mt-2 bg-red-800 w-1/2 m-auto rounded-lg p-1"
+      >
+        Dirección del cliente obligatoria
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <label for="town" class="inline-block font-medium text-gray-700 mb-1"
+        >Ciudad del cliente</label
+      >
+      <input
+        type="text"
+        formControlName="town"
+        name="town"
+        id="town"
+        placeholder="Ciudad del cliente (ej: 03160 Almoradi (Alicante))"
+        ngModel="{{ client.data.town }}"
+        class="bg-gray-100 text-gray-800 block w-2/4 m-auto rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+      />
+      <div
+        *ngIf="
+          clienteForm.get('town').invalid && clienteForm.get('town').touched
+        "
+        class="text-white mt-2 bg-red-800 w-1/2 m-auto rounded-lg p-1"
+      >
+        Ciudad del cliente obligatoria
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <label for="telephone" class="inline-block font-medium text-gray-700 mb-1"
+        >Número de teléfono del cliente</label
+      >
+      <input
+        type="text"
+        formControlName="telephone"
+        name="telephone"
+        id="telephone"
+        placeholder="Número de teléfono del cliente (9 caracteres)"
+        ngModel="{{ client.data.telephone }}"
+        class="bg-gray-100 text-gray-800 block w-2/4 m-auto rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+      />
+      <div
+        *ngIf="
+          clienteForm.get('telephone').invalid &&
+          clienteForm.get('telephone').touched
+        "
+        class="text-white mt-2 bg-red-800 w-1/2 m-auto rounded-lg p-1"
+      >
+        Número de teléfono del cliente inválido
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <label for="email" class="inline-block font-medium text-gray-700 mb-1"
+        >Correo electrónico del cliente (opcional)</label
+      >
+      <input
+        type="text"
+        formControlName="email"
+        name="email"
+        id="email"
+        placeholder="Correo electrónico del cliente (opcional)"
+        ngModel="{{ client.data.email }}"
+        class="bg-gray-100 text-gray-800 block w-2/4 m-auto rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+      />
+    </div>
+
+    <div class="flex items-center justify-center">
+      <button
+        class="mt-5 mr-5 disabled:bg-orange-200 bg-orange-500 px-10 py-3 rounded-lg text-white"
+        (click)="editar()"
+        [disabled]="validateForm()"
+      >
+        Actualizar cliente
+      </button>
+    </div>
+  </form>
+</div>

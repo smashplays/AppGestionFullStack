@@ -1,0 +1,315 @@
+<mat-sidenav-container fullscreen>
+  <mat-sidenav #sidenav mode="over" [ngStyle]="{ width: '250px' }">
+    <mat-toolbar class="h-32">
+      <span class="m-auto"
+        ><img
+          src="../../../assets/img/logo.png"
+          alt="Logo"
+          (click)="sidenav.toggle()"
+          class="w-36"
+      /></span>
+      <span class="spacer"></span>
+    </mat-toolbar>
+
+    <mat-nav-list>
+      <mat-list-item
+        *ngFor="let item of sidebarItems"
+        (click)="sidenav.toggle()"
+        [routerLink]="item.url"
+      >
+        <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+        {{ item.label }}
+      </mat-list-item>
+      <mat-list-item (click)="sidenav.toggle()" [routerLink]="['/agenda']"
+        ><mat-icon matListItemIcon>calendar_month</mat-icon
+        >Agenda</mat-list-item
+      >
+      <mat-list-item
+        *ngIf="user.data.role.toLowerCase() === 'admin'"
+        (click)="sidenav.toggle()"
+        [routerLink]="['/usuario/listado']"
+        ><mat-icon matListItemIcon>person</mat-icon>Usuarios</mat-list-item
+      >
+      <mat-list-item class="mt-8" (click)="logout()"
+        ><mat-icon matListItemIcon>logout</mat-icon>Cerrar sesión</mat-list-item
+      >
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-toolbar color="black">
+    <button mat-icon-button (click)="sidenav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+
+    <span class="spacer"></span>
+  </mat-toolbar>
+
+  <div class="container p-2 text-center">
+    <full-calendar
+      class="text-white mb-5 p-5 m-auto"
+      [options]="calendarOptions"
+    >
+    </full-calendar>
+    <div
+      id="authentication-modal"
+      tabindex="-1"
+      id="formModal"
+      aria-hidden="true"
+      class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
+    >
+      <div class="relative w-full max-w-md max-h-full modal">
+        <!-- Modal content -->
+        <div class="relative bg-[#221F1F] rounded-lg shadow">
+          <button
+            type="button"
+            id="closeBtn"
+            class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
+            data-modal-hide="authentication-modal"
+          >
+            <svg
+              aria-hidden="true"
+              class="w-5 h-5"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+            <span class="sr-only">Close modal</span>
+          </button>
+          <div class="px-6 py-6 lg:px-8">
+            <h3 class="mb-4 text-xl font-medium text-white">
+              Crear un nuevo evento
+            </h3>
+            <form class="space-y-6" [formGroup]="agendaForm" autocomplete="off">
+              <div>
+                <label
+                  for="name"
+                  class="block mb-2 text-sm font-medium text-white"
+                  >Nombre del evento</label
+                >
+                <input
+                  type="text"
+                  formControlName="name"
+                  name="name"
+                  id="name"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                  placeholder="Nombre del evento"
+                />
+                <div
+                  *ngIf="
+                    agendaForm.get('name').invalid &&
+                    agendaForm.get('name').touched
+                  "
+                  class="text-white mt-2 bg-red-800 w-full m-auto rounded-lg p-1"
+                >
+                  Nombre del evento obligatorio
+                </div>
+              </div>
+              <div>
+                <label
+                  for="start"
+                  class="block mb-2 text-sm font-medium text-white"
+                  >Fecha de inicio</label
+                >
+                <input
+                  type="datetime-local"
+                  formControlName="start"
+                  min="2023-05-02T09:30"
+                  name="start"
+                  id="start"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                  placeholder="Fecha de inicio"
+                />
+                <div
+                  *ngIf="
+                    agendaForm.get('start').invalid &&
+                    agendaForm.get('start').touched
+                  "
+                  class="text-white mt-2 bg-red-800 w-full m-auto rounded-lg p-1"
+                >
+                  Fecha de inicio obligatoria
+                </div>
+              </div>
+              <div>
+                <label
+                  for="end"
+                  class="block mb-2 text-sm font-medium text-white"
+                  >Fecha de fin</label
+                >
+                <input
+                  type="datetime-local"
+                  formControlName="end"
+                  min="2023-05-02T09:30"
+                  name="end"
+                  id="end"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                  placeholder="Fecha de fin"
+                />
+                <div
+                  *ngIf="
+                    agendaForm.get('end').invalid &&
+                    agendaForm.get('end').touched
+                  "
+                  class="text-white mt-2 bg-red-800 w-full m-auto rounded-lg p-1"
+                >
+                  Fecha de fin obligatoria
+                </div>
+              </div>
+              <button
+                (click)="addEventos()"
+                type="button"
+                [disabled]="validateForm()"
+                class="w-full text-white disabled:bg-orange-200 bg-orange-700 hover:bg-orange-900 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              >
+                Crear evento
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="authentication-modal"
+      tabindex="-1"
+      id="formModal2"
+      aria-hidden="true"
+      class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
+    >
+      <div class="relative w-full max-w-md max-h-full modal2">
+        <!-- Modal content -->
+        <div class="relative bg-[#221F1F] rounded-lg shadow">
+          <button
+            type="button"
+            id="closeBtn2"
+            class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
+            data-modal-hide="authentication-modal"
+          >
+            <svg
+              aria-hidden="true"
+              class="w-5 h-5"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+            <span class="sr-only">Close modal</span>
+          </button>
+          <div class="px-6 py-6 lg:px-8">
+            <h3 class="mb-4 text-xl font-medium text-white">
+              Actualizar evento
+            </h3>
+            <form
+              class="space-y-6"
+              [formGroup]="agendaForm2"
+              autocomplete="off"
+            >
+              <div>
+                <label
+                  for="name"
+                  class="block mb-2 text-sm font-medium text-white"
+                  >Nombre del evento</label
+                >
+                <input
+                  type="text"
+                  formControlName="name"
+                  name="name"
+                  id="name"
+                  [(ngModel)]="event.data.name"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                  placeholder="Nombre del evento"
+                />
+                <div
+                  *ngIf="
+                    agendaForm2.get('name').invalid &&
+                    agendaForm2.get('name').touched
+                  "
+                  class="text-white mt-2 bg-red-800 w-full m-auto rounded-lg p-1"
+                >
+                  Nombre del evento obligatorio
+                </div>
+              </div>
+              <div>
+                <label
+                  for="start"
+                  class="block mb-2 text-sm font-medium text-white"
+                  >Fecha de inicio</label
+                >
+                <input
+                  type="datetime-local"
+                  formControlName="start"
+                  min="2023-05-02T09:30"
+                  name="start"
+                  [(ngModel)]="event.data.start"
+                  id="start"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                  placeholder="Fecha de inicio"
+                />
+                <div
+                  *ngIf="
+                    agendaForm2.get('start').invalid &&
+                    agendaForm2.get('start').touched
+                  "
+                  class="text-white mt-2 bg-red-800 w-full m-auto rounded-lg p-1"
+                >
+                  Fecha de inicio obligatoria
+                </div>
+              </div>
+              <div>
+                <label
+                  for="end"
+                  class="block mb-2 text-sm font-medium text-white"
+                  >Fecha de fin</label
+                >
+                <input
+                  type="datetime-local"
+                  formControlName="end"
+                  min="2023-05-02T09:30"
+                  name="end"
+                  id="end"
+                  [(ngModel)]="event.data.end"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                  placeholder="Fecha de fin"
+                />
+                <div
+                  *ngIf="
+                    agendaForm2.get('end').invalid &&
+                    agendaForm2.get('end').touched
+                  "
+                  class="text-white mt-2 bg-red-800 w-full m-auto rounded-lg p-1"
+                >
+                  Fecha de fin obligatoria
+                </div>
+              </div>
+              <button
+                (click)="updateEvent(event.data.id)"
+                type="button"
+                [disabled]="validateForm2()"
+                class="w-1/2 text-white disabled:bg-orange-200 bg-orange-700 hover:bg-orange-900 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              >
+                Actualizar evento
+              </button>
+              <button
+                (click)="deleteEvent(event.data.id)"
+                type="button"
+                class="ml-2 w-1/2 text-white bg-red-700 hover:bg-red-900 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              >
+                Eliminar evento
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-sidenav-container>

@@ -1,0 +1,50 @@
+<mat-sidenav-container fullscreen>
+  <mat-sidenav #sidenav mode="over" [ngStyle]="{ width: '250px' }">
+    <mat-toolbar class="h-32">
+      <span class="m-auto"
+        ><img
+          src="../../../assets/img/logo.png"
+          alt="Logo"
+          (click)="sidenav.toggle()"
+          class="w-36"
+      /></span>
+      <span class="spacer"></span>
+    </mat-toolbar>
+
+    <mat-nav-list>
+      <mat-list-item
+        *ngFor="let item of sidebarItems"
+        (click)="sidenav.toggle()"
+        [routerLink]="item.url"
+      >
+        <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+        {{ item.label }}
+      </mat-list-item>
+      <mat-list-item (click)="sidenav.toggle()" [routerLink]="['/agenda']"
+        ><mat-icon matListItemIcon>calendar_month</mat-icon
+        >Agenda</mat-list-item
+      >
+      <mat-list-item
+        *ngIf="user.data.role.toLowerCase() === 'admin'"
+        (click)="sidenav.toggle()"
+        [routerLink]="['/usuario/listado']"
+        ><mat-icon matListItemIcon>person</mat-icon>Usuarios</mat-list-item
+      >
+      <mat-list-item class="mt-8" (click)="logout()"
+        ><mat-icon matListItemIcon>logout</mat-icon>Cerrar sesión</mat-list-item
+      >
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-toolbar color="black">
+    <button mat-icon-button (click)="sidenav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+
+    <span class="spacer"></span>
+  </mat-toolbar>
+
+  <div class="container p-2">
+    <router-outlet></router-outlet>
+  </div>
+</mat-sidenav-container>

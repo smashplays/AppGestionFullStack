@@ -1,0 +1,113 @@
+<div class="p-5 text-center" *ngIf="login">
+  <h1 class="text-center text-4xl text-[#FFFFFF] mt-5 font-bold">
+    EDITAR USUARIO Nº {{ user.data.id }}
+  </h1>
+  <form [formGroup]="userForm" class="mt-8" autocomplete="off">
+    <div class="mb-4">
+      <input
+        type="text"
+        formControlName="name"
+        name="name"
+        id="name"
+        placeholder="Nombre de usuario"
+        ngModel="{{ user.data.name }}"
+        class="bg-gray-100 text-gray-800 block w-2/4 m-auto rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+      />
+      <div
+        *ngIf="userForm.get('name').invalid && userForm.get('name').touched"
+        class="text-white mt-2 bg-red-800 w-1/2 m-auto rounded-lg p-1"
+      >
+        Nombre de usuario obligatorio
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <input
+        type="password"
+        formControlName="password"
+        name="password"
+        id="password"
+        placeholder="Nueva contraseña del usuario (mínimo 6 caracteres)"
+        class="bg-gray-100 text-gray-800 block w-2/4 m-auto rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+      />
+      <div
+        *ngIf="
+          userForm.get('password').invalid && userForm.get('password').touched
+        "
+        class="text-white mt-2 bg-red-800 w-1/2 m-auto rounded-lg p-1"
+      >
+        Contraseña obligatoria
+      </div>
+      <div
+        *ngIf="
+          userForm.get('password').valid &&
+          userForm.get('password').value.length < 6
+        "
+        class="text-white mt-2 bg-red-800 w-1/2 m-auto rounded-lg p-1"
+      >
+        La contraseña necesita mínimo 6 caracteres
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <input
+        type="password"
+        formControlName="rpassword"
+        name="rpassword"
+        id="rpassword"
+        placeholder="Repetir nueva contraseña"
+        class="bg-gray-100 text-gray-800 block w-2/4 m-auto rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+      />
+      <div
+        *ngIf="
+          userForm.get('rpassword').invalid && userForm.get('rpassword').touched
+        "
+        class="text-white mt-2 bg-red-800 w-1/2 m-auto rounded-lg p-1"
+      >
+        Repetir contraseña obligatorio
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <input
+        type="text"
+        formControlName="role"
+        name="role"
+        id="role"
+        placeholder="Rol del usuario (admin o user)"
+        ngModel="{{ user.data.role }}"
+        class="bg-gray-100 text-gray-800 block w-2/4 m-auto rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+      />
+      <div
+        *ngIf="userForm.get('role').invalid && userForm.get('role').touched"
+        class="text-white mt-2 bg-red-800 w-1/2 m-auto rounded-lg p-1"
+      >
+        Rol de usuario obligatorio
+      </div>
+    </div>
+
+    <div
+      *ngIf="passwordMatch"
+      class="text-white mt-2 bg-red-800 w-1/2 m-auto rounded-lg p-1 mb-5"
+    >
+      Las contraseñas no coinciden
+    </div>
+
+    <div
+      *ngIf="roleCorrect"
+      class="text-white mt-2 bg-red-800 w-1/2 m-auto rounded-lg p-1 mb-5"
+    >
+      El rol es incorrecto (user o admin disponibles)
+    </div>
+
+    <div class="flex items-center justify-center">
+      <button
+        class="mr-5 disabled:bg-orange-200 bg-orange-500 px-10 py-3 rounded-lg text-white"
+        (click)="editar()"
+        [disabled]="validateForm()"
+      >
+        Actualizar
+      </button>
+    </div>
+  </form>
+</div>
