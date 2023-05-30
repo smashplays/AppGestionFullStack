@@ -13,19 +13,24 @@ export class UserService {
 
   private URL: string = 'http://localhost:8000/api/';
 
-  private headers = new HttpHeaders()
-    .set('content-type', 'application/json')
-    .set('Access-Control-Allow-Origin', '*');
+  private headers: HttpHeaders = new HttpHeaders()
+    .set('Accept', 'application/json')
+    .set('Access-Control-Allow-Origin', '*')
+    .set('Authorization', 'Bearer ' + localStorage.getItem('token'));
 
   public getUsers(): Observable<Users> {
     return this.http
-      .get<Users>(this.URL + `users`)
+      .get<Users>(this.URL + `users`, {
+        headers: this.headers,
+      })
       .pipe(map((resp: Users) => resp));
   }
 
   public getUserById(id: number): Observable<User> {
     return this.http
-      .get<User>(this.URL + `users/${id}`)
+      .get<User>(this.URL + `users/${id}`, {
+        headers: this.headers,
+      })
       .pipe(map((resp: User) => resp));
   }
 
