@@ -26,19 +26,25 @@ export class DocumentService {
 
   public getDocuments(): Observable<Documents> {
     return this.http
-      .get<Documents>(this.URL + `documents`)
+      .get<Documents>(this.URL + `documents`, {
+        headers: this.headers,
+      })
       .pipe(map((resp: Documents) => resp));
   }
 
   public getTerminados(): Observable<Finisheds> {
     return this.http
-      .get<Finisheds>(this.URL + `terminados`)
+      .get<Finisheds>(this.URL + `terminados`, {
+        headers: this.headers,
+      })
       .pipe(map((resp: Finisheds) => resp));
   }
 
   public getClients(): Observable<Clients> {
     return this.http
-      .get<Clients>(this.URL + `clients`)
+      .get<Clients>(this.URL + `clients`, {
+        headers: this.headers,
+      })
       .pipe(map((resp: Clients) => resp));
   }
 
@@ -50,13 +56,17 @@ export class DocumentService {
 
   public getDocumentById(id: number): Observable<Document> {
     return this.http
-      .get<Document>(this.URL + `documents/${id}`)
+      .get<Document>(this.URL + `documents/${id}`, {
+        headers: this.headers,
+      })
       .pipe(map((resp: Document) => resp));
   }
 
   public getClientById(id: number): Observable<Client> {
     return this.http
-      .get<Client>(this.URL + `clients/${id}`)
+      .get<Client>(this.URL + `clients/${id}`, {
+        headers: this.headers,
+      })
       .pipe(map((resp: Client) => resp));
   }
 
@@ -86,7 +96,9 @@ export class DocumentService {
 
   public clientDocument(id: number): Observable<Client> {
     return this.http
-      .get<Client>(this.URL + `documents/${id}/client`)
+      .get<Client>(this.URL + `documents/${id}/client`, {
+        headers: this.headers,
+      })
       .pipe(map((resp: Client) => resp));
   }
 
@@ -110,7 +122,9 @@ export class DocumentService {
 
   public getFinishedById(id: number): Observable<FinishedGet> {
     return this.http
-      .get<FinishedGet>(this.URL + `terminados/${id}`)
+      .get<FinishedGet>(this.URL + `terminados/${id}`, {
+        headers: this.headers,
+      })
       .pipe(map((resp: FinishedGet) => resp));
   }
 }
