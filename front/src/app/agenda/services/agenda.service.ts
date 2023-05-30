@@ -20,13 +20,17 @@ export class AgendaService {
 
   public getEvents(): Observable<Events> {
     return this.http
-      .get<Events>(this.URL + `events`)
+      .get<Events>(this.URL + `events`, {
+        headers: this.headers,
+      })
       .pipe(map((resp: Events) => resp));
   }
 
   public getEventById(id: number): Observable<Event> {
     return this.http
-      .get<Event>(this.URL + `events/${id}`)
+      .get<Event>(this.URL + `events/${id}`, {
+        headers: this.headers,
+      })
       .pipe(map((resp: Event) => resp));
   }
 
